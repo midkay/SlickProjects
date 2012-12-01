@@ -12,17 +12,17 @@ public class ZeldaCraft extends BasicGame {
 	
 	public BlockMap map;
 	
-	protected float playerX = SCREEN_WIDTH / 2;
-	protected float playerY = SCREEN_HEIGHT / 2;
+	public static final int SCREEN_WIDTH = 1024;
+	public static final int SCREEN_HEIGHT = 576;
+	
+	
 	public float worldX = SCREEN_WIDTH / 2;
 	public float worldY = SCREEN_HEIGHT / 2;
 	
+	private PlayerZelda p1;
 	Image player = null;
 	private Polygon playerPoly;
 	public final float playerSpeed = (float) 0.2;
-	
-	public static final int SCREEN_WIDTH = 1024;
-	public static final int SCREEN_HEIGHT = 576;
 	
 	public ZeldaCraft() {
 		super("A minecraft, minicraft, zelda ripoff (sorry mojang/nintendo plz no sue)");
@@ -32,12 +32,13 @@ public class ZeldaCraft extends BasicGame {
 	public void init(GameContainer container) throws SlickException {
 		map = new BlockMap("res/zeldaCraft/level.tmx");
 		player = new Image ("res/zeldaCraft/link_front.gif");
+		p1 = new PlayerZelda (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 		
 		playerPoly = new Polygon(new float[]{
-				playerX,playerY,
-				playerX+32,playerY,
-				playerX+32,playerY+32,
-				playerX,playerY+32
+				p1.posX(), p1.posY(),
+				p1.posX()+32, p1.posY(),
+				p1.posX()+32, p1.posY()+32,
+				p1.posX(), p1.posY()+32
 		});
 	}
 
@@ -49,48 +50,48 @@ public class ZeldaCraft extends BasicGame {
 		if (input.isKeyDown(Input.KEY_W)) {
 			player = new Image("res/zeldaCraft/link_back.gif");
 			
-			playerY -= playerSpeed * delta;
-			playerPoly.setY (playerY);
+			p1.moveY (-playerSpeed * delta);
+			playerPoly.setY (p1.posY());
 			
 			if (entityCollisionWith()) {
-				playerY += playerSpeed * delta;
-				playerPoly.setY (playerY);
+				p1.moveY (playerSpeed * delta);
+				playerPoly.setY (p1.posY());
 			}
 		}
 		
 		if (input.isKeyDown(Input.KEY_A)) {
 			player = new Image("res/zeldaCraft/link_lside.gif");
 			
-			playerX -= playerSpeed * delta;
-			playerPoly.setX (playerX);
+			p1.moveX (-playerSpeed * delta);
+			playerPoly.setX (p1.posX());
 			
 			if (entityCollisionWith()) {
-				playerX += playerSpeed * delta;
-				playerPoly.setX (playerX);
+				p1.moveX (playerSpeed * delta);
+				playerPoly.setX (p1.posX());
 			}
 		}
 		
 		if (input.isKeyDown(Input.KEY_S)) {
 			player = new Image("res/zeldaCraft/link_front.gif");
 			
-			playerY += playerSpeed * delta;
-			playerPoly.setY (playerY);
+			p1.moveY (playerSpeed * delta);
+			playerPoly.setY (p1.posY());
 			
 			if (entityCollisionWith()) {
-				playerY -= playerSpeed * delta;
-				playerPoly.setY (playerY);
+				p1.moveY (-playerSpeed * delta);
+				playerPoly.setY (p1.posY());
 			}
 		}
 		
 		if (input.isKeyDown(Input.KEY_D)) {
 			player = new Image("res/zeldaCraft/link_rside.gif");
 			
-			playerX += playerSpeed * delta;
-			playerPoly.setX (playerX);
+			p1.moveX (playerSpeed * delta);
+			playerPoly.setX (p1.posX());
 			
 			if (entityCollisionWith()) {
-				playerX -= playerSpeed * delta;
-				playerPoly.setX (playerX);
+				p1.moveX (-playerSpeed * delta);
+				playerPoly.setX (p1.posX());
 			}
 		}
 		
@@ -126,13 +127,13 @@ public class ZeldaCraft extends BasicGame {
 		
 		
 		// player coords
-		g.drawString("playerX: " + playerX, 10, 50);
-		g.drawString("playerY: " + playerY, 10, 70);
+		g.drawString("playerX: " + p1.posX(), 10, 50);
+		g.drawString("playerY: " + p1.posY(), 10, 70);
 		//player polygon box
 		g.draw (playerPoly);
 		
 		
-		player.draw (playerX, playerY);
+		player.draw (p1.posX(), p1.posY());
 	}
 
 }
