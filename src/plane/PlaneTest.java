@@ -1,4 +1,4 @@
-package slicktest;
+package plane;
 
 import java.io.IOException;
 import java.net.*;
@@ -44,9 +44,9 @@ public class PlaneTest extends BasicGame {
 
 	@Override
 	public void init(GameContainer gc) throws SlickException {
-		land = new Image("clouds.jpg");
-		plane = new Image("plane.png");
-		balloon = new Image("balloon2.png");
+		land = new Image("res/plane/clouds.jpg");
+		plane = new Image("res/plane/plane.png");
+		balloon = new Image("res/plane/balloon2.png");
 		level = 0;
 		planeX = 400;
 		planeY = 400;
@@ -63,17 +63,17 @@ public class PlaneTest extends BasicGame {
 	public void update(GameContainer gc, int delta) throws SlickException {
 		Input input = gc.getInput();
 
-		if (input.isKeyDown(Input.KEY_A)) {
+		if (input.isKeyDown(Input.KEY_A)) { // turn left
 			plane.rotate(-0.2f * delta);
 			startGame(gc);
 		}
 
-		if (input.isKeyDown(Input.KEY_D)) {
+		if (input.isKeyDown(Input.KEY_D)) { // turn right
 			plane.rotate(0.2f * delta);
 			startGame(gc);
 		}
-
-		if (input.isKeyDown(Input.KEY_W)) {
+		
+		if (input.isKeyDown(Input.KEY_W)) { // go forward
 			float hip = 0.4f * delta;
 
 			float rotation = plane.getRotation();
@@ -81,6 +81,10 @@ public class PlaneTest extends BasicGame {
 			planeX += hip * Math.sin(Math.toRadians(rotation));
 			planeY -= hip * Math.cos(Math.toRadians(rotation));
 			startGame(gc);
+		}
+		
+		if (input.isKeyDown(Input.KEY_ESCAPE)) { // escape to exit
+			System.exit(0);
 		}
 
 		float planeCenterX = planeX + plane.getCenterOfRotationX();
