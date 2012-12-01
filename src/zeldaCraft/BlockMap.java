@@ -31,9 +31,8 @@ public class BlockMap extends ZeldaCraft {
 				boolean blocked = "true".equals (tmap.getTileProperty (tileID, "blocked", "false"));
 				
 				//if there is collision, create a poly around it
-				if (blocked == true) {
+				if (blocked == true)
 					entities.add (new Block (x * 32, y * 32, square, "square"));
-				}
 			}
 		}
 		

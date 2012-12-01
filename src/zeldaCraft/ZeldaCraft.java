@@ -94,9 +94,8 @@ public class ZeldaCraft extends BasicGame {
 			}
 		}
 		
-		if (input.isKeyDown(Input.KEY_ESCAPE)) {
+		if (input.isKeyDown(Input.KEY_ESCAPE))
 			System.exit(0);
-		}
 		//end key input
 		
 		/*
@@ -113,9 +112,8 @@ public class ZeldaCraft extends BasicGame {
 	public boolean entityCollisionWith() throws SlickException {
 		for (int i = 0; i < BlockMap.entities.size(); i++) {
 			Block entity1 = (Block) BlockMap.entities.get(i);
-			if (playerPoly.intersects (entity1.poly)) {
+			if (playerPoly.intersects (entity1.poly))
 				return true;
-			}   
 		}     
 		return false;
 	}

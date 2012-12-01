@@ -83,6 +83,10 @@ public class PlaneTest extends BasicGame {
 			startGame(gc);
 		}
 		
+		if (input.isKeyDown(Input.KEY_R)) {
+			init(gc);
+		}
+		
 		if (input.isKeyDown(Input.KEY_ESCAPE)) { // escape to exit
 			System.exit(0);
 		}
