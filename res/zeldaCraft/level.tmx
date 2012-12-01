@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="64" height="36" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="cobble" tilewidth="32" tileheight="32">
+  <image source="cobble.png" width="32" height="32"/>
+  <tile id="0">
+   <properties>
+    <property name="blocked" value="true"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="2" name="grass" tilewidth="32" tileheight="32">
+  <image source="grass.png" width="32" height="32"/>
+ </tileset>
+ <layer name="tiles" width="64" height="36">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+2XwQ6EIAxEcf//o/fiYWPsAu3Q6YiHXtDQea+E6NFaO96SqM9ZvbXfZ94+vQxWreBF1QgzuqfXU3b/LO4qWaqwR/KjHLBZGPNTn/+VYYaDcd9U51d1gPC2G7/lgJ2Jzb+Tgx352d+clVhV2ZH/VxX4Pb2fwu7lRzthn+PMXpUcsCrC/xRfUX51B4gzoOxB7Q5YcX+psI84QOzH5vPmR7lk8zDc7cp/54Cdh8kf8abqbza79b6iDyvvv9yRb6RqTizuFTlH/0O9heDvrWecwew9rvOfcbtyNtb+3plmnkW1+gIkUmJoACQAAA==
+  </data>
+ </layer>
+</map>
