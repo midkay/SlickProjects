@@ -13,12 +13,12 @@ import org.newdawn.slick.SlickException;
 
 public class MarioRipoff extends BasicGame {
 
-	private int[][] levelData;
-	public final int levelHeight = 22;
-	public final int levelCols = 74;
-	public final int tileSize = 32;
-	public final float playerSpeed = (float) 0.15;
-	public final float gravSpeed = (float) 0.2;
+	protected static int[][] levelData;
+	protected static final int levelHeight = 22;
+	protected static final int levelCols = 74;
+	protected static final int tileSize = 32;
+	protected final float playerSpeed = (float) 0.15;
+	protected final float gravSpeed = (float) 0.2;
 	
 	public static final int SCREEN_WIDTH = 1280;
 	public static final int SCREEN_HEIGHT = 704;
@@ -86,15 +86,15 @@ public class MarioRipoff extends BasicGame {
 		Input input = gc.getInput();
 		
 		// gravity: always attempt to fall the player an appropriate amount
-		p1.moveY(gravSpeed * delta, levelData, tileSize);
+		p1.moveY(gravSpeed * delta);
 
 		if (input.isKeyDown(Input.KEY_A)) { // A = move left
-			p1.moveX(-playerSpeed * delta, levelData, tileSize);
+			p1.moveX(-playerSpeed * delta);
 			facingRight = false;
 		}
 
 		if (input.isKeyDown(Input.KEY_D)) { // D = move right
-			p1.moveX(playerSpeed * delta, levelData, tileSize);
+			p1.moveX(playerSpeed * delta);
 			facingRight = true;
 		}
 
@@ -110,7 +110,7 @@ public class MarioRipoff extends BasicGame {
 		
 		// jumping calculations
 		if(jumping) {
-			p1.moveY(-jumpSpeed * delta, levelData, tileSize); // move up if jumping
+			p1.moveY(-jumpSpeed * delta); // move up if jumping
 			jumpSpeed *= 0.997; // scale down jumping speed				
 		}
 
