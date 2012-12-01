@@ -19,19 +19,16 @@ public class MarioRipoff extends BasicGame {
 	protected static final int tileSize = 32;
 	protected final float playerSpeed = (float) 0.15;
 	protected final float gravSpeed = (float) 0.2;
+	protected final String resLocation = "res/mario/";
+	protected final String[] tileNames = {"stone.png", "grass.png", "dirt.png", "cobble.png", "arrow_right.png", "dirty_grass.png", "spikes.png", "obsidian.png"};
 	
 	public static final int SCREEN_WIDTH = 1280;
 	public static final int SCREEN_HEIGHT = 704;
-	
-	Image grass;
-	Image dirt;
-	Image dirtyGrass;
-	Image stone;
-	Image cobble;
-	Image spikes;
-	Image arrowRight;
+
 	Image playerLeft;
 	Image playerRight;
+	
+	Image[] tiles;
 	
 	private float worldX;
 	
@@ -41,23 +38,24 @@ public class MarioRipoff extends BasicGame {
 	
 	private Player p1;
 
-	public MarioRipoff() {
+	public MarioRipoff() throws SlickException {
 		super("zakk's mario ripoff (sorry nintendo plz no sue)");
+
+
 	}
 
 	@Override
 	public void init(GameContainer gc) throws SlickException {
 		levelData = new int[levelHeight][levelCols];
-		grass = new Image("res/mario/grass.png");
-		stone = new Image("res/mario/stone.png");
-		dirt = new Image("res/mario/dirt.png");
-		cobble = new Image("res/mario/cobble.png");
-		dirtyGrass = new Image("res/mario/dirty_grass.png");
-		spikes = new Image("res/mario/spikes.png");
-		arrowRight = new Image("res/mario/arrow_right.png");
+		p1 = new Player(SCREEN_WIDTH/3, 100);
+		
 		playerLeft = new Image("res/mario/mario.png");
 		playerRight = playerLeft.getFlippedCopy(true, false);
-		p1 = new Player(SCREEN_WIDTH/3, 100);
+		
+		tiles = new Image[tileNames.length];
+		for(int i = 0; i < tileNames.length; i++) {
+			tiles[i] = new Image(resLocation + tileNames[i]);
+		}
 
 		worldX = 0;
 		facingRight = true;
@@ -66,7 +64,7 @@ public class MarioRipoff extends BasicGame {
 		
 		Scanner input = null;
 		try {
-			input = new Scanner(new File("res/mario/level.txt"));
+			input = new Scanner(new File(resLocation + "level.txt"));
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -155,29 +153,7 @@ public class MarioRipoff extends BasicGame {
 				int x = (int) ((j*tileSize)-worldX);
 				int y = (i*tileSize);
 				
-				switch(levelData[i][j]) {
-				case 0:
-					stone.draw(x, y);
-					break;
-				case 1:
-					grass.draw(x, y);
-					break;
-				case 2:
-					dirt.draw(x, y);
-					break;
-				case 3:
-					cobble.draw(x, y);
-					break;
-				case 4:
-					arrowRight.draw(x, y);
-					break;
-				case 5:
-					dirtyGrass.draw(x, y);
-					break;
-				case 6:
-					spikes.draw(x, y);
-					break;
-				}
+				tiles[levelData[i][j]].draw(x, y);
 			}
 		}
 		
