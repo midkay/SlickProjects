@@ -24,7 +24,6 @@ public class Player {
 		if(checkCollision(playerX, playerY, levelData, tileSize) ||
 		   checkCollision(playerX, playerY+tileSize-1, levelData, tileSize)) {
 			playerX = ((int) (playerX/tileSize) + 1) * tileSize;
-			return;
 		}
 		// check right corners for collision. move back just as far as needed, if needed
 		if(checkCollision(playerX+tileSize, playerY, levelData, tileSize) ||
@@ -37,15 +36,16 @@ public class Player {
 		playerY += delta;
 		
 		// check bottom corners for collision. move back just as far as needed, if needed
-		if(checkCollision(playerX+tileSize-1, playerY+tileSize, levelData, tileSize) ||
-		   checkCollision(playerX, playerY+tileSize, levelData, tileSize)) {
+		if(checkCollision(playerX+tileSize-1, playerY+tileSize-1, levelData, tileSize) ||
+		   checkCollision(playerX, playerY+tileSize-1, levelData, tileSize)) {
 			playerY = ((int) (playerY/tileSize)) * tileSize;
-			return;
+			MarioRipoff.stopJump(true);
 		}
 		// check top corners for collision. move back just as far as needed, if needed
 		if(checkCollision(playerX+tileSize-1, playerY, levelData, tileSize) ||
 		   checkCollision(playerX, playerY, levelData, tileSize)) {
 			playerY = ((int) (playerY/tileSize) + 1) * tileSize;
+			MarioRipoff.stopJump(false);
 		}
 	}
 	
@@ -59,7 +59,7 @@ public class Player {
 		
 		return levelData[tileY][tileX] != 0;
 	}
-	
+
 	public void tick() {
 		playerOldX = playerX;
 		playerOldY = playerY;
