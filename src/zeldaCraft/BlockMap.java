@@ -1,6 +1,6 @@
 package zeldaCraft;
 
-import java.util.*;
+import java.util.ArrayList;
 
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
@@ -11,16 +11,14 @@ public class BlockMap extends ZeldaCraft {
 	public static int mapWidth;
 	public static int mapHeight;
 	
-	//public static ArrayList<Object> entities;
-	public static Map<Integer, Block> entities;
+	public static ArrayList<Object> entities;
 	
 	//square shaped tile
 	//Coords indicate top left, top right, bottom right, and bottom left respectively
-	private int square[] = {0,0, 32,0, 32,32, 0,32};
+	private int square[] = {0,0, 31,0, 31,31, 0,31};
 	
 	public BlockMap (String mapData) throws SlickException {
-		//entities = new ArrayList<Object>();
-		entities = new HashMap<Integer, Block>();
+		entities = new ArrayList<Object>();
 		tmap = new TiledMap (mapData, "res/zeldaCraft/");
 		mapWidth = tmap.getWidth() * tmap.getTileWidth();
 		mapHeight = tmap.getHeight() * tmap.getTileHeight();
@@ -33,17 +31,8 @@ public class BlockMap extends ZeldaCraft {
 				boolean blocked = "true".equals (tmap.getTileProperty (tileID, "blocked", "false"));
 				
 				//if there is collision, create a poly around it
-				if (blocked == true) {
-					//entities.add (new Block (x * 32, y * 32, square, "square"));
-					int temp = x * 32 * 10000;
-					temp +=  y * 32;
-					
-					System.out.println(temp);
-					entities.put(temp, new Block (x * 32, y * 32, square, "square"));
-
-					//System.out.println(x * 32 + " " + y * 32);
-				}
-				
+				if (blocked == true)
+					entities.add (new Block (x * 32, y * 32, square, "square"));
 			}
 		}
 		
