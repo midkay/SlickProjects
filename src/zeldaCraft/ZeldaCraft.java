@@ -13,12 +13,11 @@ public class ZeldaCraft extends BasicGame {
 
 	public static TiledMap map;
 	public static int tileSize = 32;
-
+	
 	public static final int SCREEN_WIDTH = 1024;
 	public static final int SCREEN_HEIGHT = 576;
-
-	public float worldX = SCREEN_WIDTH / 2;
-	public float worldY = SCREEN_HEIGHT / 2;
+	public float worldX;
+	public float worldY;
 
 	public static boolean[][] collideTiles;
 
@@ -27,8 +26,7 @@ public class ZeldaCraft extends BasicGame {
 	public final float playerSpeed = (float) 0.2;
 
 	public ZeldaCraft() {
-		super(
-				"A minecraft, minicraft, zelda ripoff (sorry mojang/nintendo plz no sue)");
+		super("A minecraft, minicraft, zelda ripoff (sorry mojang/nintendo plz no sue)");
 	}
 
 	@Override
@@ -36,19 +34,21 @@ public class ZeldaCraft extends BasicGame {
 		map = new TiledMap("res/zeldaCraft/level.tmx", "res/zeldaCraft/");
 
 		player = new Image("res/zeldaCraft/link_front.gif");
-		p1 = new PlayerZelda(map.getWidth() * tileSize / 2, map.getHeight()
-				* tileSize / 2);
+		p1 = new PlayerZelda(map.getWidth() * tileSize / 2, map.getHeight() * tileSize / 2);
+		
+		worldY = SCREEN_HEIGHT / 2;
+		worldX = SCREEN_WIDTH / 2;
+		
 		collideTiles = new boolean[map.getWidth()][map.getHeight()];
 
 		for (int i = 0; i < map.getWidth(); i++) {
 			for (int j = 0; j < map.getHeight(); j++) {
 				int tileID = map.getTileId(i, j, 0);
 
-				collideTiles[i][j] = "true".equals(map.getTileProperty(tileID,
+				collideTiles[i][j] = "true".equals (map.getTileProperty(tileID,
 						"blocked", "false"));
 
-				if ("true"
-						.equals(map.getTileProperty(tileID, "spawn", "false")))
+				if ("true".equals (map.getTileProperty (tileID, "spawn", "false")))
 					p1.setPos(i * tileSize, j * tileSize);
 			}
 		}
@@ -97,8 +97,8 @@ public class ZeldaCraft extends BasicGame {
 		// warning: this is confusing!!
 		map.render(-tileSize + (int) (worldX % tileSize), -tileSize
 				+ (int) (worldY % tileSize), (int) (-worldX / tileSize) - 1,
-				(int) (-worldY / tileSize) - 1, SCREEN_WIDTH / tileSize + 2,
-				SCREEN_HEIGHT / tileSize + 2);
+					(int) (-worldY / tileSize) - 1, SCREEN_WIDTH / tileSize + 2,
+						SCREEN_HEIGHT / tileSize + 2);
 
 		// draw overlays (text etc)
 		g.drawString("ZeldaCraft v.CHoDE", 10, 30);
