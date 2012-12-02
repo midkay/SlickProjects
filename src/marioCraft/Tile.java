@@ -1,4 +1,4 @@
-package marioRipoff;
+package marioCraft;
 
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;

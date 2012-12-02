@@ -1,4 +1,4 @@
-package marioRipoff;
+package marioCraft;
 
 import java.io.*;
 import java.util.*;
@@ -11,7 +11,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
-public class MarioRipoff extends BasicGame {
+public class MarioCraft extends BasicGame {
 
 	protected static int[][] levelData;
 	protected static final int levelHeight = 22;
@@ -38,7 +38,7 @@ public class MarioRipoff extends BasicGame {
 	
 	private Player p1;
 
-	public MarioRipoff() throws SlickException {
+	public MarioCraft() throws SlickException {
 		super("zakk's mario ripoff (sorry nintendo plz no sue)");
 
 
@@ -111,18 +111,9 @@ public class MarioRipoff extends BasicGame {
 			p1.moveY(-jumpSpeed * delta); // move up if jumping
 			jumpSpeed *= 0.997; // scale down jumping speed				
 		}
-
-		// ensure valid player x position
-		if(p1.playerX < 0)
-			p1.playerX = 0;
-		if(p1.playerX > levelCols*tileSize)
-			p1.playerX = levelCols*tileSize;
 		
-		// ensure valid player y position
-		if(p1.playerY < 0)
-			p1.playerY = 0;
-		//if(p1.playerY > 600)
-		//	p1.playerY = 600;
+		// ensure we haven't walked off the map in all this mayhem
+		p1.validateCoords();
 		
 		// WORLD SCROLLING CODE
 		// move the world view left if player's global x coordinate nears the right edge
@@ -182,7 +173,7 @@ public class MarioRipoff extends BasicGame {
 
 	// launch the friggin game
 	public static void main(String[] args) throws SlickException {
-		AppGameContainer app = new AppGameContainer(new MarioRipoff());
+		AppGameContainer app = new AppGameContainer(new MarioCraft());
 
 		app.setDisplayMode(SCREEN_WIDTH, SCREEN_HEIGHT, false);
 		app.start();

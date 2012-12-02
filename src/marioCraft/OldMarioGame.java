@@ -1,4 +1,4 @@
-package marioRipoff;
+package marioCraft;
 
 import java.io.*;
 import java.util.*;
@@ -12,7 +12,7 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.particles.*;
 import org.newdawn.slick.SlickException;
 
-public class MarioGame extends BasicGame {
+public class OldMarioGame extends BasicGame {
 
 	private int[][] levelData;
 	public final int levelHeight = 16;
@@ -32,7 +32,7 @@ public class MarioGame extends BasicGame {
 	private float playerOldX;
 	private float playerOldY;
 
-	public MarioGame() {
+	public OldMarioGame() {
 		super("zakk's mario ripoff (sorry nintendo plz no sue)");
 	}
 
@@ -133,7 +133,7 @@ public class MarioGame extends BasicGame {
 	}
 
 	public static void main(String[] args) throws SlickException {
-		AppGameContainer app = new AppGameContainer(new MarioGame());
+		AppGameContainer app = new AppGameContainer(new OldMarioGame());
 
 		app.setDisplayMode(1280, 768, false);
 		app.start();
