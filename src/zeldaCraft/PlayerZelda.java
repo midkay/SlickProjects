@@ -49,12 +49,7 @@ public class PlayerZelda extends ZeldaCraft{
 	
 	// returns true if a collision is occurring at the given x,y
 	public boolean checkCollision(float x, float y) {
-			//collision checking
-			int tileID = map.getTileId ((int) (x / 32), (int) (y / 32), 0);
-			boolean blocked = "true".equals (map.getTileProperty (tileID, "blocked", "false"));
-				
-			//if there is collision this will be true
-			return blocked;
+		return collideTiles[(int) (x/tileSize)][(int) (y/tileSize)];
 	}
 	
 	public void tick() {
@@ -68,5 +63,20 @@ public class PlayerZelda extends ZeldaCraft{
 	
 	public float posY() {
 		return playerY;
+	}
+	
+	public void setX(float pos) {
+		playerX = pos;
+		playerOldX = pos;
+	}
+	
+	public void setY(float pos) {
+		playerY = pos;
+		playerOldY = pos;
+	}
+	
+	public void setPos(float x, float y) {
+		setX(x);
+		setY(y);
 	}
 }
