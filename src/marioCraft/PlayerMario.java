@@ -1,16 +1,16 @@
 package marioCraft;
 
-public class Player {
+public class PlayerMario {
 	protected float playerX;
 	protected float playerY;
 	protected float playerOldX;
 	protected float playerOldY;
 
-	public Player() {
+	public PlayerMario() {
 		this(100, 100);
 	}
 
-	public Player(int startX, int startY) {
+	public PlayerMario(int startX, int startY) {
 		playerX = startX;
 		playerY = startY;
 		playerOldX = playerX;

@@ -36,7 +36,7 @@ public class MarioCraft extends BasicGame {
 	private static boolean jumping;
 	private static float jumpSpeed;
 	
-	private Player p1;
+	private PlayerMario p1;
 
 	public MarioCraft() throws SlickException {
 		super("zakk's mario ripoff (sorry nintendo plz no sue)");
@@ -47,7 +47,7 @@ public class MarioCraft extends BasicGame {
 	@Override
 	public void init(GameContainer gc) throws SlickException {
 		levelData = new int[levelHeight][levelCols];
-		p1 = new Player(SCREEN_WIDTH/3, 100);
+		p1 = new PlayerMario(SCREEN_WIDTH/3, 100);
 		
 		playerLeft = new Image("res/mario/mario.png");
 		playerRight = playerLeft.getFlippedCopy(true, false);
