@@ -21,30 +21,24 @@ public class PlayerZelda extends ZeldaCraft{
 		playerX += delta;
 		
 		// check left corners for collision. move back just as far as needed, if needed
-		if(checkCollision(playerX, playerY) ||
-		   checkCollision(playerX, playerY+ZeldaCraft.tileSize-1)) {
-			playerX = ((int) (playerX/ZeldaCraft.tileSize) + 1) * ZeldaCraft.tileSize;
-		}
+		if(checkCollision(playerX, playerY) || checkCollision(playerX, playerY+tileSize-1))
+			playerX = ((int) (playerX/tileSize) + 1) * tileSize;
+		
 		// check right corners for collision. move back just as far as needed, if needed
-		if(checkCollision(playerX+ZeldaCraft.tileSize, playerY) ||
-		   checkCollision(playerX+ZeldaCraft.tileSize, playerY+ZeldaCraft.tileSize-1)) {
-			playerX = ((int) (playerX/ZeldaCraft.tileSize)) * ZeldaCraft.tileSize;
-		}
+		if(checkCollision(playerX+tileSize, playerY) || checkCollision(playerX+tileSize, playerY+tileSize-2))
+			playerX = ((int) (playerX/tileSize)) * tileSize;
 	}
 	
 	public void moveY(float delta) {
 		playerY += delta;
 		
 		// check bottom corners for collision. move back just as far as needed, if needed
-		if(checkCollision(playerX+ZeldaCraft.tileSize-1, playerY+ZeldaCraft.tileSize) ||
-		   checkCollision(playerX, playerY+ZeldaCraft.tileSize)) {
-			playerY = ((int) (playerY/ZeldaCraft.tileSize)) * ZeldaCraft.tileSize;
-		}
+		if(checkCollision(playerX+tileSize-1, playerY+tileSize) || checkCollision(playerX, playerY+tileSize))
+			playerY = ((int) (playerY/tileSize)) * tileSize;
+
 		// check top corners for collision. move back just as far as needed, if needed
-		if(checkCollision(playerX+ZeldaCraft.tileSize-1, playerY) ||
-		   checkCollision(playerX, playerY)) {
-			playerY = ((int) (playerY/ZeldaCraft.tileSize) + 1) * ZeldaCraft.tileSize;
-		}
+		if(checkCollision(playerX+tileSize-1, playerY) || checkCollision(playerX, playerY))
+			playerY = ((int) (playerY/tileSize) + 1) * tileSize;
 	}
 	
 	// returns true if a collision is occurring at the given x,y
