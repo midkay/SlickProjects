@@ -22,17 +22,9 @@
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="5" name="minecraft tiles" tilewidth="32" tileheight="32">
-  <image source="tiles_minecraft.png" width="512" height="288"/>
- </tileset>
  <layer name="tiles" width="100" height="64">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+2WQY7EIAwEszP7/zfvZQ9RFAIEYzemDqVREo2ALoz5HsfxBQAAAAAAANiMnwGi574aI1ln9mK9Lq+cMzmJzgcfe3pQdhKdRy+ff2rvzt9WcvK07lomJazzbxmzlZV8WK991Jv3+NEu7nxE4e1C3Ueki5bcet6/daLiYmUfI/NXcpHBxzXTnnUon1XWTizvV7W5jaxB3YdKnXC32s8H9aHn4+xE0YWKkx3rY1cfpTXjYr6Pnvubog/vzEvj1+Yy4z6Nj/Jzy1yy+/A4E+7G/H3pY4YjFRejPiLqY4YrJR9Wuar6aPGTwcfK4EOLaB+tPdYri9Kz1zwy+vDsHzP2krIPq70+sz6y+GipDU8nVueVlYtsPmp792m869gR/UPtrNqxn5+d4GNfHzNczPx/dh+tTnpzrOU70mc9Xaj6OPdXi6xGnO/u43P5tc7kzd2rh4w+7ubpuUctcn3bx7x91Jw87eHRPW9ZU7NqNcJHby9ZAatzMtJHNicWRPvAi54L/OND0U10DquAi/XABQAAAAAAAETxB6oOoJEAZAAA
-  </data>
- </layer>
- <layer name="overlay" width="100" height="64">
-  <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3OoQEAMAjAMF7gLf4/aGICiQSRmNpGAAAAAAAAAAAAAAC0HAoAAAAAAADAV9sDAAAAAAAAnPEAf3q3JgBkAAA=
+   H4sIAAAAAAAAC+3X3W6CUBREYUTf/5m98cIQEc7vzN5nXaw0aVOF+RDa57ZtTyIiIiIiIqLFejSkPvZotWyd2aX3ec3aOZOJeh881nRwNlHvUdr+6ep73z+LZPLvvK82OWvE/r2K5LFvYzaodZv9/mqLXx6qZlu4eygtWvbsaeJiEdmj5fidLDJ4HDctOQ/ne1Vkk8weUU16OKotVvc4mqgt8PDyUP4f5hIe+s7OGQvd9lE81PuN2BmPun3VJm4eKotXx/ePaOL02Zj5/tE8Ij0/RvlE9cjil80juona4849tPZc1Nuu7uGwX49jd/ZQ791qEsnj7t/g6r1r9+xhi4eHpeO9akWPbxM8PMpyr8ri6fz5KHWI7hPl+fFvx5KN3Y2cPfbD19673b0easvo8es4Z16jPXatfQ7O9rgyqbm/jLx2z16/5HdKXlfhUfosWSmlByZ+Hrj4WeCPh6ONeocoYREvLIiIiIiIiEjVG8E0ALEAZAAA
   </data>
  </layer>
 </map>

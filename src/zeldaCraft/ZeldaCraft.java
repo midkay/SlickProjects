@@ -31,7 +31,7 @@ public class ZeldaCraft extends BasicGame {
 
 	@Override
 	public void init(GameContainer container) throws SlickException {
-		map = new TiledMap("res/zeldaCraft/level.tmx", "res/zeldaCraft/");
+		map = new TiledMap("res/zeldaCraft/level.tmx", "res/zeldaCraft");
 
 		player = new Image("res/zeldaCraft/link_front.gif");
 		p1 = new PlayerZelda(map.getWidth() * tileSize / 2, map.getHeight() * tileSize / 2);
@@ -41,6 +41,7 @@ public class ZeldaCraft extends BasicGame {
 		
 		collideTiles = new boolean[map.getWidth()][map.getHeight()];
 
+		// solidity 
 		for (int i = 0; i < map.getWidth(); i++) {
 			for (int j = 0; j < map.getHeight(); j++) {
 				int tileID = map.getTileId(i, j, 0);

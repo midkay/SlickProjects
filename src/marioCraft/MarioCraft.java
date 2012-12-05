@@ -1,8 +1,5 @@
 package marioCraft;
 
-import java.io.*;
-import java.util.*;
-
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
@@ -10,27 +7,29 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.tiled.Layer;
+import org.newdawn.slick.tiled.TiledMap;
 
 public class MarioCraft extends BasicGame {
 
-	protected static int[][] levelData;
-	protected static final int levelHeight = 22;
-	protected static final int levelCols = 74;
+	protected static TiledMap map;
 	protected static final int tileSize = 32;
 	protected final float playerSpeed = (float) 0.15;
-	protected final float gravSpeed = (float) 0.2;
-	protected final String resLocation = "res/mario/";
-	protected final String[] tileNames = {"stone.png", "grass.png", "dirt.png", "cobble.png", "arrow_right.png", "dirty_grass.png", "spikes.png", "obsidian.png"};
+	protected final float gravSpeed = (float) 0.24;
+	protected final String resLocation = "res/mario";
+	protected static int[][] tileType;
 	
-	public static final int SCREEN_WIDTH = 1280;
-	public static final int SCREEN_HEIGHT = 704;
+	protected static final int SCREEN_WIDTH = 1280;
+	protected static final int SCREEN_HEIGHT = 704;
+	protected static final int BLOCK_SOLID = 1;
+	protected static final int BLOCK_KILL  = -1;
+	protected static boolean dead = false;
 
 	Image playerLeft;
 	Image playerRight;
-	
-	Image[] tiles;
-	
+
 	private float worldX;
+	private float worldY;
 	
 	private boolean facingRight;
 	private static boolean jumping;
@@ -40,43 +39,51 @@ public class MarioCraft extends BasicGame {
 
 	public MarioCraft() throws SlickException {
 		super("zakk's mario ripoff (sorry nintendo plz no sue)");
-
-
 	}
 
 	@Override
 	public void init(GameContainer gc) throws SlickException {
-		levelData = new int[levelHeight][levelCols];
-		p1 = new PlayerMario(SCREEN_WIDTH/3, 100);
+		map = new TiledMap(resLocation + "/mariocraft.tmx", resLocation);
+		
+		// spawn player into center of the map by default (placing a spawn point will change this)
+		p1 = new PlayerMario(map.getWidth() / 2, map.getHeight() / 2);
 		
 		playerLeft = new Image("res/mario/mario.png");
 		playerRight = playerLeft.getFlippedCopy(true, false);
-		
-		tiles = new Image[tileNames.length];
-		for(int i = 0; i < tileNames.length; i++) {
-			tiles[i] = new Image(resLocation + tileNames[i]);
-		}
 
 		worldX = 0;
+		worldY = 0;
 		facingRight = true;
 		jumping = false;
 		jumpSpeed = 0;
+		dead = false;
 		
-		Scanner input = null;
-		try {
-			input = new Scanner(new File(resLocation + "level.txt"));
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		// take the first levelHeight no. of rows from the input file 
-		for(int i = 0; i < levelHeight; i++) {
-			String line = input.nextLine();
-			for(int j = 0; j<line.length(); j++) {
-				levelData[i][j] = (int) (line.charAt(j) - '0');
+		// load collision tile properties into 2D boolean array for faster access
+		tileType = new int[map.getWidth()][map.getHeight()];
+		for(int layer=0; layer < map.getLayerCount(); layer++) {
+			for (int i = 0; i < map.getWidth(); i++) {
+				for (int j = 0; j < map.getHeight(); j++) {
+					int tileID = map.getTileId(i, j, layer);
+					
+					// 'collide' tiles, on only the world layer, are considered solid blocks
+					if(layer == 0 && "true".equals (map.getTileProperty(tileID, "collide", "false")))
+						tileType[i][j] = BLOCK_SOLID;
+					
+					// 'kill' tiles on any layer count as deadly
+					if("true".equals (map.getTileProperty(tileID, "kill", "false")))
+						tileType[i][j] = BLOCK_KILL;
+	
+					// if we find a spawn point, set player coords there
+					if ("true".equals (map.getTileProperty (tileID, "spawn", "false")))
+						p1.setPos(i * tileSize, j * tileSize);
+				}
 			}
 		}
+
+		// initially set the world camera to be centered on the player
+		worldX = (float) (p1.playerX - SCREEN_WIDTH * .2);
+		worldY = (float) (p1.playerY - SCREEN_HEIGHT / 2);
+
 	}
 
 	@Override
@@ -108,12 +115,9 @@ public class MarioCraft extends BasicGame {
 		
 		// jumping calculations
 		if(jumping) {
-			p1.moveY(-jumpSpeed * delta); // move up if jumping
-			jumpSpeed *= 0.997; // scale down jumping speed				
+			p1.moveY(-jumpSpeed * delta * (float) 1.8); // move up if jumping
+			jumpSpeed *= 1 - (0.0045 * delta); // scale down jumping speed				
 		}
-		
-		// ensure we haven't walked off the map in all this mayhem
-		p1.validateCoords();
 		
 		// WORLD SCROLLING CODE
 		// move the world view left if player's global x coordinate nears the right edge
@@ -122,53 +126,58 @@ public class MarioCraft extends BasicGame {
 		// move the world view right if player nears left edge
 		if(p1.playerX - worldX < (.2 * SCREEN_WIDTH))
 			worldX = (float) (p1.playerX - (.2 * SCREEN_WIDTH));
-		// make sure we haven't gone too far in either direction (into null space)
-		if(worldX < 0)
-			worldX = 0;
-		if(worldX > (levelCols - 1) * tileSize - SCREEN_WIDTH)
-			worldX = (levelCols - 1) * tileSize - SCREEN_WIDTH;
-
+		// move the world view down if player nears the bottom edge
+		if(p1.playerY - worldY > (.7 * SCREEN_HEIGHT))
+			worldY = (float) (p1.playerY - (.7 * SCREEN_HEIGHT));
+		// move the world view up if player nears top edge
+		if(p1.playerY - worldY < (.2 * SCREEN_HEIGHT))
+			worldY = (float) (p1.playerY - (.2 * SCREEN_HEIGHT));
+		
 		// if we're about to fall off the screen... don't
-		if(p1.playerY > SCREEN_HEIGHT - tileSize)
+		if(p1.playerY > map.getHeight() * tileSize - tileSize * 2)
 			init(gc);
 		
-		p1.tick(); // playerOldX gets assigned current (valid) playerX/playerY values
+		if(dead) // died at some point during this update .. RIP
+			init(gc);
+		
+		p1.tick(); // update playerOldX & Y
 	}
 
 	public void render(GameContainer gc, Graphics g) throws SlickException {
-		// draw world
-		for(int i = 0; i < levelHeight; i++) { // every row
-			// draw only the currently visible world tiles. efficiency ftw
-			for(int j = (int) (worldX / tileSize); j <= (int) (worldX / tileSize + SCREEN_WIDTH / tileSize); j++) {
-				// coords we're gonna draw the current tile at
-				int x = (int) ((j*tileSize)-worldX);
-				int y = (i*tileSize);
-				
-				tiles[levelData[i][j]].draw(x, y);
-			}
-		}
-		
-		// draw overlays (text etc)
-		g.drawString("Mario Ripoff v0.0.0.2", 10, 30);
+		drawLayer(map.getLayerIndex("world"));    // draw the world
+		drawLayer(map.getLayerIndex("underlay")); // draw any 'overlay' tiles below the player
 		
 		// draw mario facing the right direction
 		if(facingRight)
-			playerLeft.draw((int) (p1.posX() - worldX), (int) p1.posY());
+			playerLeft.draw((int) (p1.posX() - worldX), (int) (p1.posY() - worldY));
 		else
-			playerRight.draw((int) (p1.posX() - worldX), (int) p1.posY());
+			playerRight.draw((int) (p1.posX() - worldX), (int) (p1.posY() - worldY));
 		
-		// player coords (debug)
+		// draw any 'overlay' tiles above the player
+		drawLayer(map.getLayerIndex("overlay"));
+		
+		// draw text overlays (coords, debug etc)
+		g.drawString("Mario Ripoff v0.0.0.3", 10, 30);
 		g.drawString("playerX: " + p1.playerX, 10, 50);
 		g.drawString("playerY: " + p1.playerY, 10, 70);
-		g.drawString("worldX: " + worldX + "  % tileSize = " + worldX % tileSize, 10, 90);
-		
+		g.drawString("worldX: " + worldX, 10, 90);
+		g.drawString("worldY: " + worldY, 10, 110);
 	}
 	
-	// sets jumping speed to 0 and optionally re-enables jumping ability
+	// sets jumping speed to 0 and optionally re-allows jumping
 	public static void stopJump(boolean landed) {
 		jumpSpeed = 0;
 		if(landed)
 			jumping = false;
+	}
+	
+	// render the given layer, efficiently -- draw only the tiles we need drawn
+	// warning: this is confusing!!
+	public void drawLayer(int layer) {
+		map.render(-tileSize + (int) (-worldX % tileSize), -tileSize
+				+ (int) (-worldY % tileSize), (int) (worldX / tileSize) - 1,
+					(int) (worldY / tileSize) - 1, SCREEN_WIDTH / tileSize + 2,
+						SCREEN_HEIGHT / tileSize + 2, layer, true);
 	}
 
 	// launch the friggin game
