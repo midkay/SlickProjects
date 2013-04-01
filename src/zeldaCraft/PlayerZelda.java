@@ -1,76 +1,128 @@
-package zeldaCraft;
+package zeldacraft;
 
-public class PlayerZelda extends ZeldaCraft{
-	protected float playerX;
-	protected float playerY;
-	protected float playerOldX;
-	protected float playerOldY;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
+import org.newdawn.slick.SlickException;
 
-	public PlayerZelda() {
-		this(100, 100);
-	}
 
-	public PlayerZelda(int startX, int startY) {
-		playerX = startX;
-		playerY = startY;
-		playerOldX = playerX;
-		playerOldY = playerY;
-	}
+public class PlayerZelda extends Entity
+{
+	private float cameraX; private float cameraY;
+	private float playerSpeed;
+	private String lastInput;
+	
 
-	public void moveX(float delta) {
-		playerX += delta;
+	public PlayerZelda (int entityX, int entityY) 
+	{
+		super (entityX, entityY); //Sets all superclass fields
 		
-		// check left corners for collision. move back just as far as needed, if needed
-		if(checkCollision(playerX, playerY) || checkCollision(playerX, playerY+tileSize-1))
-			playerX = ((int) (playerX/tileSize) + 1) * tileSize;
+		cameraX = screenW / 2; cameraY = screenH / 2;
+		playerSpeed = (float) .2;
+	}
+	
+	
+	/*
+	 * This method handles all player movements, inputs and adjusts the camera
+	 */
+	public void movementHandler (GameContainer container, int delta, Map curMap) throws SlickException 
+	{
+		Input input = container.getInput();
 		
-		// check right corners for collision. move back just as far as needed, if needed
-		if(checkCollision(playerX+tileSize, playerY) || checkCollision(playerX+tileSize, playerY+tileSize-2))
-			playerX = ((int) (playerX/tileSize)) * tileSize;
-	}
-	
-	public void moveY(float delta) {
-		playerY += delta;
+		if (input.isKeyDown (Input.KEY_A)) //Move Left
+		{
+			setX (getX() - (playerSpeed * delta));
+			getAniLeft().update(delta);
+			setLastInput ("left");
+		}
+		if (input.isKeyDown (Input.KEY_D)) //Move Right
+		{
+			setX (getX() + (playerSpeed * delta));
+			getAniRight().update(delta);
+			setLastInput ("right");
+		}
+		if (input.isKeyDown (Input.KEY_S)) //Move down
+		{
+			setY (getY() + (playerSpeed * delta));
+			getAniDown().update(delta);
+			setLastInput ("down");
+		}
+		if (input.isKeyDown (Input.KEY_W)) //Move up
+		{
+			setY (getY() - (playerSpeed * delta));
+			getAniUp().update(delta);
+			setLastInput ("up");
+		}
+		if (input.isKeyDown (Input.KEY_ESCAPE))
+			System.exit(0);
 		
-		// check bottom corners for collision. move back just as far as needed, if needed
-		if(checkCollision(playerX+tileSize-1, playerY+tileSize) || checkCollision(playerX, playerY+tileSize))
-			playerY = ((int) (playerY/tileSize)) * tileSize;
-
-		// check top corners for collision. move back just as far as needed, if needed
-		if(checkCollision(playerX+tileSize-1, playerY) || checkCollision(playerX, playerY))
-			playerY = ((int) (playerY/tileSize) + 1) * tileSize;
+		entityCollision (curMap);
+		
+		setCameraX (screenW / 2 - getX());
+		setCameraY (screenH / 2 - getY());
 	}
 	
-	// returns true if a collision is occurring at the given x,y
-	public boolean checkCollision(float x, float y) {
-		return collideTiles[(int) (x/tileSize)][(int) (y/tileSize)];
+	
+	/*
+	 * Renders the appropriate player animation based on input;
+	 * Player will always appear to be in the middle of the screen
+	 */
+	public void playerAniRender (GameContainer container, Graphics g)
+	{
+		if (getLastInput() == null) //before any input, just draw the ani facing down
+			getAniDown().draw (screenW / 2, screenH / 2);
+		
+		if (getLastInput() == "left") //if last input was left, draw left ani
+			getAniLeft().draw (screenW / 2, screenH / 2);
+		
+		if (getLastInput() == "right") //if last input was right, draw right ani
+			getAniRight().draw (screenW / 2, screenH / 2);
+		
+		if (getLastInput() == "down") //if last input was down, draw down ani
+			getAniDown().draw (screenW / 2, screenH / 2);
+		
+		if (getLastInput() == "up") //if last input was up, draw up ani
+			getAniUp().draw (screenW / 2, screenH / 2);
 	}
 	
-	public void tick() {
-		playerOldX = playerX;
-		playerOldY = playerY;
+	
+	public float getCameraX()
+	{
+		return cameraX;
+	}
+	public void setCameraX (float newCameraX)
+	{
+		cameraX = newCameraX;
 	}
 	
-	public float posX() {
-		return playerX;
+	
+	public float getCameraY()
+	{
+		return cameraY;
+	}
+	public void setCameraY (float newCameraY)
+	{
+		cameraY = newCameraY;
 	}
 	
-	public float posY() {
-		return playerY;
+	
+	public float getPlayerSpeed()
+	{
+		return playerSpeed;
+	}
+	public void setPlayerSpeed (float newSpeed)
+	{
+		playerSpeed = newSpeed;
 	}
 	
-	public void setX(float pos) {
-		playerX = pos;
-		playerOldX = pos;
+	
+	public String getLastInput()
+	{
+		return lastInput;
+	}
+	public void setLastInput (String input)
+	{
+		lastInput = input;
 	}
 	
-	public void setY(float pos) {
-		playerY = pos;
-		playerOldY = pos;
-	}
-	
-	public void setPos(float x, float y) {
-		setX(x);
-		setY(y);
-	}
 }
