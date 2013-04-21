@@ -1,6 +1,8 @@
-package zeldacraft;
+package zeldaCraft;
 
 import org.newdawn.slick.Animation;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 
@@ -8,8 +10,10 @@ import org.newdawn.slick.SpriteSheet;
 public class Entity extends ZeldaCraft
 {
 	private float entityX; private float entityY;
+	private float entitySpeed;
 	private Animation entityAniLeft; private Animation entityAniRight;
 	private Animation entityAniDown; private Animation entityAniUp;
+	private String entityLastDirection;
 	
 	
 	/*
@@ -68,8 +72,6 @@ public class Entity extends ZeldaCraft
 			}
 		}
 	}
-	
-	
 	public Animation getAniLeft() 
 	{
 		return entityAniLeft;
@@ -120,30 +122,77 @@ public class Entity extends ZeldaCraft
 	}
 	
 	
+	/*
+	 * Renders the appropriate entity animation based on direction and passed coords
+	 */
+	public void entityAniRender (GameContainer container, Graphics g, float posX, float posY)
+	{
+		if (getLastDirection() == null) //before any input, just draw the ani facing down
+			entityAniDown.draw (posX, posY);
+		
+		if (getLastDirection() == "left") //if last input was left, draw left ani
+			entityAniLeft.draw (posX, posY);
+		
+		if (getLastDirection() == "right") //if last input was right, draw right ani
+			entityAniRight.draw (posX, posY);
+		
+		if (getLastDirection() == "down") //if last input was down, draw down ani
+			entityAniDown.draw (posX, posY);
+		
+		if (getLastDirection() == "up") //if last input was up, draw up ani
+			entityAniUp.draw (posX, posY);
+	}
+	
+	
+	/*
+	 * returns the distance between the entity and passed entity
+	 */
+	public double distanceMethod (Entity passedEntity)
+	{
+		double distance;
+
+		distance = Math.sqrt (Math.pow ((passedEntity.getX() - entityX), 2) + 
+			Math.pow ((passedEntity.getY() - entityY), 2));
+
+		return distance;
+	}
+	
+	
 	public float getX() 
 	{
 		return entityX;
 	}
-	public void setX (float posX) 
+	public void setX (float newX) 
 	{
-		entityX = posX;
+		entityX = newX;
 	}
-	
-	
 	public float getY() 
 	{
 		return entityY;
 	}
-	public void setY (float posY) 
+	public void setY (float newY) 
 	{
-		entityY = posY;
+		entityY = newY;
 	}
 	
 	
-	public void setCoords (float posX, float posY)
+	public float getEntitySpeed()
 	{
-		entityX = posX;
-		entityY = posY;
+		return entitySpeed;
+	}
+	public void setEntitySpeed (float newSpeed)
+	{
+		entitySpeed = newSpeed;
+	}
+	
+	
+	public String getLastDirection()
+	{
+		return entityLastDirection;
+	}
+	public void setLastDirection (String direction)
+	{
+		entityLastDirection = direction;
 	}
 	
 }

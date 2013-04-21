@@ -1,4 +1,4 @@
-package zeldacraft;
+package zeldaCraft;
 
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
@@ -13,6 +13,7 @@ public class ZeldaCraft extends BasicGame
 	public static final int screenW = 1280; public static final int screenH = 720;
 	protected Map initialMap;
 	protected PlayerZelda player;
+	protected Mobs mob;
 	
 	
 	/**********************************************
@@ -33,11 +34,16 @@ public class ZeldaCraft extends BasicGame
 		initialMap = new Map ("res/zeldaCraft/level.tmx");
 		
 		player = new PlayerZelda (initialMap.getMapWidth() / 2, initialMap.getMapHeight() / 2);
-	
 		player.setAnimation ("res/zeldaCraft/link/link_normal_noshield/link_left.png", "left");
 		player.setAnimation ("res/zeldaCraft/link/link_normal_noshield/link_right.png", "right");
 		player.setAnimation ("res/zeldaCraft/link/link_normal_noshield/link_down.png", "down");
 		player.setAnimation ("res/zeldaCraft/link/link_normal_noshield/link_up.png", "up");
+		
+		mob = new Mobs (1000, 1000, "link");
+		mob.setAnimation ("res/zeldaCraft/link/link_normal_noshield/link_left.png", "left");
+		mob.setAnimation ("res/zeldaCraft/link/link_normal_noshield/link_right.png", "right");
+		mob.setAnimation ("res/zeldaCraft/link/link_normal_noshield/link_down.png", "down");
+		mob.setAnimation ("res/zeldaCraft/link/link_normal_noshield/link_up.png", "up");
 	}
 	
 	
@@ -48,6 +54,7 @@ public class ZeldaCraft extends BasicGame
 	public void update (GameContainer container, int delta) throws SlickException
 	{
 		player.movementHandler (container, delta, initialMap);
+		mob.mobMovement (player, delta, initialMap);
 	}
 	
 	
@@ -59,13 +66,16 @@ public class ZeldaCraft extends BasicGame
 	{
 		initialMap.mapRender (container, g, player.getCameraX(), player.getCameraY());
 		
-		player.playerAniRender (container, g);
+		player.entityAniRender (container, g, screenW / 2, screenH / 2);
+		mob.entityAniRender (container, g, mob.getX() + player.getCameraX(), mob.getY() + player.getCameraY());
 		
 		g.drawString ("ZeldaCraft v.CHoDE", 10, 30);
 		g.drawString ("playerX: " + player.getX(), 10, 50); 
 		g.drawString ("playerY: " + player.getY(), 10, 70);
 		g.drawString ("cameraX: " + player.getCameraX(), 10, 100);
 		g.drawString ("cameraY: " + player.getCameraY(), 10, 120);
+		g.drawString ("mobX: " + mob.getX(), 10, 150); 
+		g.drawString ("mobY: " + mob.getY(), 10, 170);
 	}
 	
 	
