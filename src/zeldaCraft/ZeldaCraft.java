@@ -13,7 +13,7 @@ public class ZeldaCraft extends BasicGame
 	public static final int screenW = 1280; public static final int screenH = 720;
 	protected Map initialMap;
 	protected PlayerZelda player;
-	protected Mobs mob;
+	protected Mob mob; //this needs to be a list of mobs, not just one instance of mob!
 	
 	
 	/**********************************************
@@ -33,13 +33,13 @@ public class ZeldaCraft extends BasicGame
 	{
 		initialMap = new Map ("res/zeldaCraft/level.tmx");
 		
-		player = new PlayerZelda (initialMap.getMapWidth() / 2, initialMap.getMapHeight() / 2);
+		player = new PlayerZelda (initialMap.getMapWidth() / 2, initialMap.getMapHeight() / 2, 32, 32, 10, 2);
 		player.setAnimation ("res/zeldaCraft/link/link_normal_noshield/link_left.png", "left");
 		player.setAnimation ("res/zeldaCraft/link/link_normal_noshield/link_right.png", "right");
 		player.setAnimation ("res/zeldaCraft/link/link_normal_noshield/link_down.png", "down");
 		player.setAnimation ("res/zeldaCraft/link/link_normal_noshield/link_up.png", "up");
 		
-		mob = new Mobs (1000, 1000, "link");
+		mob = new Mob (1000, 1000, 32, 32, 5, 1, "linkMob");
 		mob.setAnimation ("res/zeldaCraft/link/link_normal_noshield/link_left.png", "left");
 		mob.setAnimation ("res/zeldaCraft/link/link_normal_noshield/link_right.png", "right");
 		mob.setAnimation ("res/zeldaCraft/link/link_normal_noshield/link_down.png", "down");
@@ -53,8 +53,9 @@ public class ZeldaCraft extends BasicGame
 	 */
 	public void update (GameContainer container, int delta) throws SlickException
 	{
-		player.movementHandler (container, delta, initialMap);
-		mob.mobMovement (player, delta, initialMap);
+		player.playerUpdate (container, delta, initialMap, mob);
+		mob.mobUpdate (player, delta, initialMap);
+		System.out.println(player.getHealth());
 	}
 	
 	
@@ -76,6 +77,8 @@ public class ZeldaCraft extends BasicGame
 		g.drawString ("cameraY: " + player.getCameraY(), 10, 120);
 		g.drawString ("mobX: " + mob.getX(), 10, 150); 
 		g.drawString ("mobY: " + mob.getY(), 10, 170);
+		g.drawString ("playerPolyX: " + player.getPoly().getX(), 10, 200); 
+		g.drawString ("playerPolyY: " + player.getPoly().getY(), 10, 220);
 	}
 	
 	

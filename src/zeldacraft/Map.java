@@ -62,9 +62,12 @@ public class Map extends ZeldaCraft
 	/*
 	 * returns true if a collision is occurring at the given coords
 	 */
-	public String collisionCheck (float x, float y)
+	public boolean collisionCheck (float x, float y)
 	{
-		return tileProperty [(int) (x / tileSize)] [(int) (y / tileSize)];
+		if (tileProperty [(int) (x / tileSize)] [(int) (y / tileSize)] == "blocked")
+			return true;
+		else
+			return false;
 	}
 	
 	
